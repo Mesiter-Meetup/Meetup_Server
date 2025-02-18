@@ -23,11 +23,13 @@ public class AuthController {
         return authService.registerUser(request);
     }
 
+    // ✅ 로그인 (POST /auth/login) → JWT 발급
     @PostMapping("/login")
     public TokenResponse login(@RequestBody LoginRequest request) {
-        return authService.login(request);  // 클라이언트(LocalStorage)에 저장
+        return authService.login(request);
     }
 
+    // ✅ 리프레시 토큰을 이용한 JWT 재발급 (POST /auth/refresh)
     @PostMapping("/refresh")
     public TokenResponse refresh(@RequestParam String refreshToken) {
         return jwtService.refreshToken(refreshToken);

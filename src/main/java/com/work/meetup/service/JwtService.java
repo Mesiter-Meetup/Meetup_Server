@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import com.work.meetup.dto.TokenResponse;
 
 @Service
 public class JwtService {
@@ -14,6 +15,7 @@ public class JwtService {
     private final Key key;
     private final long expirationTime;
     private final long refreshExpirationTime;
+
 
     public JwtService(@Value("${jwt.secret}") String secretKey,
                       @Value("${jwt.expiration}") long expirationTime,
@@ -53,6 +55,17 @@ public class JwtService {
         } catch (JwtException e) {
             return null;
         }
+    }
+
+    public TokenResponse refreshToken(String refreshToken) {
+        String email = jwtUtil.validateToken(refreshToken);
+
+        if (email != null) {
+            String newAccessToken = jwtUtil.generateAccessToken(email);
+            String newRefreshToken = jwtUtil.generateRefreshToken(email);
+            return new TokenResponse(newAccessToken, newRefreshToken);
+        }
+        throw new RuntimeException("Invalid refresh token");
     }
 
 

@@ -3,7 +3,6 @@ package com.work.meetup.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +10,6 @@ import java.security.Key;
 import java.util.Date;
 
 @Component
-@RequiredArgsConstructor
 public class JwtUtil {
 
     private final Key key;
@@ -26,14 +24,17 @@ public class JwtUtil {
         this.refreshExpirationTime = refreshExpirationTime;
     }
 
+    // ✅ 액세스 토큰 생성
     public String generateAccessToken(String email) {
         return generateToken(email, expirationTime);
     }
 
+    // ✅ 리프레시 토큰 생성
     public String generateRefreshToken(String email) {
         return generateToken(email, refreshExpirationTime);
     }
 
+    // ✅ JWT 토큰 생성
     private String generateToken(String email, long expiry) {
         return Jwts.builder()
                 .setSubject(email)
@@ -43,6 +44,7 @@ public class JwtUtil {
                 .compact();
     }
 
+    // ✅ 토큰 검증 후 이메일 반환
     public String validateToken(String token) {
         try {
             return Jwts.parserBuilder()
