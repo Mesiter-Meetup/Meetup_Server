@@ -21,10 +21,14 @@ dependencies {
     // Spring Boot 기본 설정
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // OAuth2 로그인 (Google, Naver, Kakao 지원)
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.security:spring-security-oauth2-client'
+
 
     // JWT 관련 라이브러리
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
@@ -44,6 +48,9 @@ dependencies {
 
     // 테스트 관련
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {

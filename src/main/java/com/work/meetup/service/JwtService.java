@@ -1,29 +1,28 @@
-package com.work.meetup.config;
-
+package com.work.meetup.service;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
 
-@Component
-@RequiredArgsConstructor
-public class JwtUtil {
+@Service
+public class JwtService {
 
     private final Key key;
     private final long expirationTime;
     private final long refreshExpirationTime;
 
-    public JwtUtil(@Value("${jwt.secret}") String secretKey,
-                   @Value("${jwt.expiration}") long expirationTime,
-                   @Value("${jwt.refreshExpiration}") long refreshExpirationTime) {
+    public JwtService(@Value("${jwt.secret}") String secretKey,
+                      @Value("${jwt.expiration}") long expirationTime,
+                      @Value("${jwt.refreshExpiration}") long refreshExpirationTime) {
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
         this.expirationTime = expirationTime;
         this.refreshExpirationTime = refreshExpirationTime;
+
+
     }
 
     public String generateAccessToken(String email) {
@@ -55,4 +54,8 @@ public class JwtUtil {
             return null;
         }
     }
+
+
+
+
 }
