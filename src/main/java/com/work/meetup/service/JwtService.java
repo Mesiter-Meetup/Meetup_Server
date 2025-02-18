@@ -1,62 +1,31 @@
 package com.work.meetup.service;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
-import java.util.Date;
+import com.work.meetup.config.JwtUtil;
 import com.work.meetup.dto.TokenResponse;
+
 
 @Service
 public class JwtService {
 
-    private final Key key;
-    private final long expirationTime;
-    private final long refreshExpirationTime;
+    private final JwtUtil jwtUtil;
 
-
-    public JwtService(@Value("${jwt.secret}") String secretKey,
-                      @Value("${jwt.expiration}") long expirationTime,
-                      @Value("${jwt.refreshExpiration}") long refreshExpirationTime) {
-        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
-        this.expirationTime = expirationTime;
-        this.refreshExpirationTime = refreshExpirationTime;
-
-
+    public JwtService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
     }
 
     public String generateAccessToken(String email) {
-        return generateToken(email, expirationTime);
+        return jwtUtil.generateAccessToken(email);
     }
 
+    // ✅ 리프레시 토큰 생성 (여기 추가!)
     public String generateRefreshToken(String email) {
-        return generateToken(email, refreshExpirationTime);
+        return jwtUtil.generateRefreshToken(email);
     }
 
-    private String generateToken(String email, long expiry) {
-        return Jwts.builder()
-                .setSubject(email)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiry))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    public String validateToken(String token) {
-        try {
-            return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
-        } catch (JwtException e) {
-            return null;
-        }
-    }
-
+    // ✅ 리프레시 토큰을 검증하고 새 액세스 토큰 발급
     public TokenResponse refreshToken(String refreshToken) {
         String email = jwtUtil.validateToken(refreshToken);
 
@@ -67,8 +36,4 @@ public class JwtService {
         }
         throw new RuntimeException("Invalid refresh token");
     }
-
-
-
-
 }

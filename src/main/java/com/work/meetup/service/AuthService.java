@@ -1,16 +1,16 @@
 package com.work.meetup.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.work.meetup.domain.User;
 import com.work.meetup.dto.SignupRequest;
 import com.work.meetup.dto.LoginRequest;
 import com.work.meetup.dto.TokenResponse;
 import com.work.meetup.repository.UserRepository;
 
-import java.util.Optional;
+import java.util.*;
 
 
 @Service

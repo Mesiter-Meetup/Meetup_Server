@@ -24,17 +24,17 @@ public class JwtUtil {
         this.refreshExpirationTime = refreshExpirationTime;
     }
 
-    // ✅ 액세스 토큰 생성
+    //  액세스 토큰 생성
     public String generateAccessToken(String email) {
         return generateToken(email, expirationTime);
     }
 
-    // ✅ 리프레시 토큰 생성
+    //  리프레시 토큰 생성
     public String generateRefreshToken(String email) {
         return generateToken(email, refreshExpirationTime);
     }
 
-    // ✅ JWT 토큰 생성
+    //  JWT 토큰 생성
     private String generateToken(String email, long expiry) {
         return Jwts.builder()
                 .setSubject(email)
@@ -44,7 +44,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // ✅ 토큰 검증 후 이메일 반환
+    //  토큰 검증 후 이메일 반환
     public String validateToken(String token) {
         try {
             return Jwts.parserBuilder()
